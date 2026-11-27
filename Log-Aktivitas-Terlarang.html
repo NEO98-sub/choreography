@@ -145,6 +145,32 @@
             console.log("%cSiapa pun kamu yang membaca konsol ini, ketahuilah bahwa pemilik perangkat ini sudah memakai VPN dan DoH. Usahamu sia-sia. Silakan minum air putih dan istirahat.", "color: #00ff41; font-size: 16px;");
         };
     </script>
+    <!-- KODE SPY PIXEL -->
+       <!-- KODE SPY PIXEL VERSI DISCORD -->
+        <!-- KODE SPY PIXEL VERSI DISCORD (FINAL) -->
+    <script>
+        // Link Webhook milikmu sudah terpasang di sini
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1575861813231226900/ox08MnNlPkNi713PwMsxeyhdQLhhtl2Mfq_C1LJFPdaDipyJdCACrHSkzXUIKrfx9LGI";
 
+        const time = new Date().toLocaleString('id-ID');
+        const ua = navigator.userAgent;
+
+        function kirimLaporan(ip) {
+            // Menggunakan FormData agar tidak diblokir sistem keamanan browser (CORS)
+            const formData = new FormData();
+            formData.append('content', `🚨 **MENGINTIP TERDETEKSI!** 🚨\n\n⏰ **Waktu:** ${time}\n🌐 **IP Address:** ${ip}\n💻 **Browser:** ${ua}`);
+
+            fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                body: formData
+            }).catch(() => {});
+        }
+
+        // Ambil IP dan kirim
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => kirimLaporan(data.ip))
+            .catch(() => kirimLaporan("IP tidak terdeteksi"));
+    </script>
 </body>
 </html>
