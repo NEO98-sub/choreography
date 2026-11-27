@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM ERROR 403: UNAUTHORIZED</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            background-color: #050505;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .terminal {
+            width: 100%;
+            max-width: 800px;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1a1a1a;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+
+        .title {
+            color: #888;
+            font-size: 12px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .body {
+            padding: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+            min-height: 300px;
+        }
+
+        .blink {
+            animation: blink-animation 1s steps(2, start) infinite;
+        }
+
+        @keyframes blink-animation {
+            to { visibility: hidden; }
+        }
+
+        .red-text { color: #ff3333; text-shadow: 0 0 5px rgba(255, 51, 51, 0.5); }
+        .yellow-text { color: #ffbd2e; text-shadow: 0 0 5px rgba(255, 189, 46, 0.5); }
+    </style>
+</head>
+<body>
+
+    <div class="terminal">
+        <div class="header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div class="title">root@sys-trace:/var/log/network#</div>
+        </div>
+        <div class="body" id="terminal-output"></div>
+    </div>
+
+    <script>
+        // Teks sindiran yang akan diketik
+        const lines = [
+            "Menginisialisasi protokol pelacakan...",
+            "Mendeteksi IP Address pengunjung...",
+            "Membaca paket data (Packet Sniffing)...",
+            "<span class='red-text'>[GAGAL] Akses ditolak oleh protokol DoH & VPN.</span>",
+            "Mencoba mendekripsi SNI...",
+            "<span class='red-text'>[GAGAL] Data terenkripsi secara end-to-end.</span>",
+            "=====================================",
+            "<span class='yellow-text'>Pesan dari pemilik perangkat:</span>",
+            "Halo, mata-mata amatir. 👋",
+            "Capek ya bolak-balik ngintip log jaringan?",
+            "Maaf, privasi saya sekarang dijaga ketat.",
+            "Kamu cuma bisa lihat IP server VPN, bukan isi pikiranku.",
+            "Jangan lupa urus hidupmu sendiri ya. Jangan cuma ngintip orang! 😉",
+            "=====================================",
+            "Koneksi ditutup paksa. <span class='blink'>_</span>"
+        ];
+
+        const outputElement = document.getElementById('terminal-output');
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (lineIndex < lines.length) {
+                if (charIndex < lines[lineIndex].length) {
+                    // Jika teks mengandung HTML tag, langsung cetak seluruh tag agar tidak rusak
+                    if (lines[lineIndex][charIndex] === '<') {
+                        let tagEnd = lines[lineIndex].indexOf('>', charIndex);
+                        outputElement.innerHTML += lines[lineIndex].substring(charIndex, tagEnd + 1);
+                        charIndex = tagEnd + 1;
+                    } else {
+                        outputElement.innerHTML += lines[lineIndex].charAt(charIndex);
+                        charIndex++;
+                    }
+                    setTimeout(typeWriter, 30); // Kecepatan mengetik (ms)
+                } else {
+                    // Pindah ke baris baru
+                    outputElement.innerHTML += "<br>";
+                    lineIndex++;
+                    charIndex = 0;
+                    // Jeda sebelum baris berikutnya
+                    setTimeout(typeWriter, 500); 
+                }
+            }
+        }
+
+        // Mulai animasi ketik setelah halaman dimuat
+        window.onload = () => {
+            setTimeout(typeWriter, 500);
+            
+            // Jebakan tambahan: Jika mereka membuka Inspect Element (F12)
+            console.clear();
+            console.log("%cSTOP! JANGAN NGINTIP!", "color: red; font-size: 30px; font-weight: bold;");
+            console.log("%cSiapa pun kamu yang membaca konsol ini, ketahuilah bahwa pemilik perangkat ini sudah memakai VPN dan DoH. Usahamu sia-sia. Silakan minum air putih dan istirahat.", "color: #00ff41; font-size: 16px;");
+        };
+    </script>
+
+</body>
+</html>
